@@ -12,25 +12,21 @@ function collect(val,addr)
 
 program
   .usage('[options] <groupName> <title> <path>')
-  .option('-a, --all','send to all recipients in a group')
+  .option('-l, --all','send to all recipients in a group')
   .option('-r, --recipient [recipient]','send to a recipient',collect,[])
   .option('-c, --channel <channel>', 'channel []')
-  .option('-d, --dev','send via dev')
+  .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
+  .option('-w, --web <website>','website',"www.esecuresend.com")
   .option('-e, --encrypted','send encrypted')
   .parse(process.argv);
 
 const doSend = Promise.coroutine(function *()
 {
   let psyHost = "localhost";
-  let apiHost = "api.esecuresend.com";
-  let website = "www.esecuresend.com";
+  let apiHost = program.api;
+  let website = program.web;
   let encrypted = false;
 
-  if(program.dev)
-  { 
-     apiHost = "api-dev.esecuresend.com";
-     website = "dev.esecuresend.com";
-  }
 
   if(program.encrypted) encrypted = true;
 

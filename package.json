@@ -1,12 +1,12 @@
 {
-  "name": "y-send",
-  "version": "0.4.0",
+  "name": "ysend",
+  "version": "0.5.0",
   "description": "A client to send a file via psylo",
   "main": "index.js",
   "dependencies": {
     "bluebird": "x",
     "commander": "x",
-    "psyloc": "^0.6.0"
+    "psyloc": "^0.6.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
