@@ -6,7 +6,7 @@
   "dependencies": {
     "bluebird": "x",
     "commander": "x",
-    "psyloc": "^0.6.1"
+    "psyloc": "^0.6.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
