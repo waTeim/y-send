@@ -1,4 +1,4 @@
-#!/usr/bin/env node --use_strict
+#!/usr/bin/env node --use-strict
 
 /*  Top level ysend driver                                       */
 /*  Cheaply copied from npm with some of the keywords replaced */

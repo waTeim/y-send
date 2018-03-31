@@ -1,8 +1,12 @@
 {
   "name": "ysend",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A client to send a file via psylo",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/waTeim/ysend.git"
+  },
   "dependencies": {
     "bluebird": "x",
     "commander": "x",
