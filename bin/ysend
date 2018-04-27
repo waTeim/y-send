@@ -51,7 +51,6 @@
     let website = program.web;
     let encrypted = false;
   
-  
     if(program.encrypted) encrypted = true;
   
     const psyloc = require('psyloc')(psyHost,apiHost,website);
@@ -60,9 +59,7 @@
     {
       try
       {
-        let path = program.args[2];
-  
-        if(path.substr(0,1) != '/') path = __dirname + "/" + path;
+        let path = path.resolve(program.args[2]);
   
         if(program.channel != null)
         {
