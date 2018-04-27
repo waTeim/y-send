@@ -1,6 +1,7 @@
 "use strict";
 
 const Promise = require('bluebird');
+const path = require('path');
 
 let program = require('commander');
 
@@ -27,7 +28,6 @@ const doSend = Promise.coroutine(function *()
   let website = program.web;
   let encrypted = false;
 
-
   if(program.encrypted) encrypted = true;
 
   const psyloc = require('psyloc')(psyHost,apiHost,website);
@@ -36,9 +36,7 @@ const doSend = Promise.coroutine(function *()
   {
     try
     {
-      let path = program.args[2];
-  
-      if(path.substr(0,1) != '/') path = __dirname + "/" + path;
+      let path = path.resolve(program.args[2]);
   
       if(program.channel != null)
       {
