@@ -28,7 +28,7 @@ const doSend = Promise.coroutine(function *()
   let website = program.web;
   let encrypted = false;
 
-  if(program.encrypted) encrypted = true;
+  if(program.encrypted != null) encrypted = true;
 
   const psyloc = require('psyloc')(psyHost,apiHost,website);
 
