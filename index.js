@@ -19,6 +19,7 @@ program
   .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
   .option('-w, --web <website>','website',"www.esecuresend.com")
   .option('-e, --encrypted','send encrypted')
+  .option('-d, --debug','generate additional logging info')
   .parse(process.argv);
 
 const doSend = Promise.coroutine(function *()
@@ -27,10 +28,12 @@ const doSend = Promise.coroutine(function *()
   let apiHost = program.api;
   let website = program.web;
   let encrypted = false;
+  let options = { debug:false };
 
   if(program.encrypted != null) encrypted = true;
+  if(program.debug != null) options.debug = true;
 
-  const psyloc = require('psyloc')(psyHost,apiHost,website);
+  const psyloc = require('psyloc')(psyHost,apiHost,website,options);
 
   if(program.args.length == 3)
   {

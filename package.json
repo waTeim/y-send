@@ -1,6 +1,6 @@
 {
   "name": "ysend",
-  "version": "0.6.6",
+  "version": "0.7.0",
   "description": "A client to send a file via psylo",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "dependencies": {
     "bluebird": "x",
     "commander": "x",
-    "psyloc": "^0.6.2"
+    "psyloc": "^0.7.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
