@@ -20,7 +20,28 @@ program
   .option('-w, --web <website>','website',"www.esecuresend.com")
   .option('-e, --encrypted','send encrypted')
   .option('-d, --debug','generate additional logging info')
+  .option('-i, --info','show transaction info')
   .parse(process.argv);
+
+
+function resMessage(res,options)
+{
+  if(res && res.success)
+  {
+    let encrypted = options.encrypted;
+
+    if(!options.info) console.log(`sending ${encrypted?"(encryption forced) ":""}...`);
+    else
+    {
+      console.log(JSON.stringify({
+        success:res.success,
+        transactionId:res.params.externalTransactionID,
+        token:res.params.token,
+        encrypted:encrypted
+      },null,2));
+    }
+  }
+}
 
 const doSend = Promise.coroutine(function *()
 {
@@ -28,10 +49,11 @@ const doSend = Promise.coroutine(function *()
   let apiHost = program.api;
   let website = program.web;
   let encrypted = false;
-  let options = { debug:false };
+  let options = { debug:false, info:false, encrypted:encrypted };
 
   if(program.encrypted != null) encrypted = true;
   if(program.debug != null) options.debug = true;
+  if(program.info != null) options.info = true;
 
   const psyloc = require('psyloc')(psyHost,apiHost,website,options);
 
@@ -40,24 +62,25 @@ const doSend = Promise.coroutine(function *()
     try
     {
       let src = path.resolve(program.args[2]);
-  
+
       if(program.channel != null)
       {
         let res = yield psyloc.sendViaChannel(program.args[0],program.channel,program.args[1],encrypted,src);
-  
-        if(res && res.success) console.log("sending...");
+
+        resMessage(res,options);
       }
       else if(program.all)
       {
         let res = yield psyloc.sendToAllReceivers(program.args[0],program.args[1],encrypted,src);
-  
-        if(res && res.success) console.log("sending...");
+
+        resMessage(res,options);
+
       }
       else if(program.recipient.length != 0)
       {
         let res = yield psyloc.sendToRlist(program.args[0],program.recipient,program.args[1],encrypted,src);
-  
-        if(res && res.success) console.log("sending...");
+
+        resMessage(res,options);
       }
       else console.error("no recipients specified");
     }
@@ -68,4 +91,4 @@ const doSend = Promise.coroutine(function *()
   }
 });
 
-doSend();
+module.exports = { doSend:doSend };
