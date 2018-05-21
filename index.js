@@ -3,27 +3,6 @@
 const Promise = require('bluebird');
 const path = require('path');
 
-let program = require('commander');
-
-function collect(val,addr)
-{
-  addr.push(val);
-  return addr;
-}
-
-program
-  .usage('[options] <groupName> <title> <path>')
-  .option('-l, --all','send to all recipients in a group')
-  .option('-r, --recipient [recipient]','send to a recipient',collect,[])
-  .option('-c, --channel <channel>', 'channel []')
-  .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
-  .option('-w, --web <website>','website',"www.esecuresend.com")
-  .option('-e, --encrypted','send encrypted')
-  .option('-d, --debug','generate additional logging info')
-  .option('-i, --info','show transaction info')
-  .parse(process.argv);
-
-
 function resMessage(res,options)
 {
   if(res && res.success)
@@ -43,7 +22,7 @@ function resMessage(res,options)
   }
 }
 
-const doSend = Promise.coroutine(function *()
+const doSend = Promise.coroutine(function *(program)
 {
   let psyHost = "localhost";
   let apiHost = program.api;
@@ -91,4 +70,36 @@ const doSend = Promise.coroutine(function *()
   }
 });
 
-module.exports = { doSend:doSend };
+const doGetStatus = Promise.coroutine(function *(program)
+{
+  let psyHost = "localhost";
+  let apiHost = program.api;
+  let website = program.web;
+  let options = { debug:false, info:false };
+
+  if(program.encrypted != null) encrypted = true;
+  if(program.debug != null) options.debug = true;
+  if(program.info != null) options.info = true;
+
+  const psyloc = require('psyloc')(psyHost,apiHost,website,options);
+
+  if(program.args.length == 1)
+  {
+    try
+    {
+      let res = yield psyloc.getTransactionStatus(program.args[0]);
+
+      console.log(JSON.stringify(res,null,2));
+    }
+    catch(e)
+    {
+      console.error(e);
+    }
+  }
+});
+
+module.exports =
+{ 
+  doGetStatus:doGetStatus,
+  doSend:doSend
+};

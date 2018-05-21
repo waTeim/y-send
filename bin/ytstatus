@@ -19,26 +19,20 @@
     return
   }
 
-  process.title = 'ysend';
+  process.title = 'ytstatus';
 
   let program = require('commander');
 
   function collect(val,addr) { addr.push(val); return addr; }
 
   program
-    .usage('[options] <groupName> <title> <path>')
-    .option('-l, --all','send to all recipients in a group')
-    .option('-r, --recipient [recipient]','send to a recipient',collect,[])
-    .option('-c, --channel <channel>', 'channel []')
+    .usage('[options] <transactionId>')
     .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
-    .option('-w, --web <website>','website',"www.esecuresend.com")
-    .option('-e, --encrypted','send encrypted')
     .option('-d, --debug','generate additional logging info')
-    .option('-i, --info','show transaction info')
     .parse(process.argv);
 
   const ysend = require('../index.js');
 
-  ysend.doSend(program);
+  ysend.doGetStatus(program);
 })();
 
