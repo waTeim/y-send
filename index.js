@@ -28,11 +28,12 @@ const doSend = Promise.coroutine(function *(program)
   let apiHost = program.api;
   let website = program.web;
   let encrypted = false;
-  let options = { debug:false, info:false, encrypted:encrypted };
 
   if(program.encrypted != null) encrypted = true;
   if(program.debug != null) options.debug = true;
   if(program.info != null) options.info = true;
+
+  let options = { debug:false, info:false, encrypted:encrypted };
 
   const psyloc = require('psyloc')(psyHost,apiHost,website,options);
 
@@ -75,11 +76,11 @@ const doGetStatus = Promise.coroutine(function *(program)
   let psyHost = "localhost";
   let apiHost = program.api;
   let website = program.web;
-  let options = { debug:false, info:false };
 
-  if(program.encrypted != null) encrypted = true;
   if(program.debug != null) options.debug = true;
   if(program.info != null) options.info = true;
+
+  let options = { debug:false, info:false };
 
   const psyloc = require('psyloc')(psyHost,apiHost,website,options);
 
