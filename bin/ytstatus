@@ -23,16 +23,22 @@
 
   let program = require('commander');
 
-  function collect(val,addr) { addr.push(val); return addr; }
+  function list(val) { return val.split(' '); }
+  function collect(val,vec) { vec.push(val); return vec; }
 
   program
-    .usage('[options] <transactionId>')
+    .usage('[options] <command>')
+    .description("command is one of export or global")
     .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
     .option('-d, --debug','generate additional logging info')
+    .option('-e, --elapsed [duration]','length of history',list,[])
+    .option('-t, --transaction [transactionId]','transaction id',collect,[])
     .parse(process.argv);
 
   const ysend = require('../index.js');
 
-  ysend.doGetStatus(program);
+  if(program.args[0] == "global") ysend.doGetStatus(program);
+  else if(program.args[0] == "export") ysend.doGetHistory(program);
+  else console.error("command is one of 'export' or 'global'");
 })();
 

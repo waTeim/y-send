@@ -2,6 +2,7 @@
 
 const Promise = require('bluebird');
 const path = require('path');
+const moment = require('moment');
 
 function resMessage(res,options)
 {
@@ -77,7 +78,6 @@ const doGetStatus = Promise.coroutine(function *(program)
   let psyHost = "localhost";
   let apiHost = program.api;
   let website = program.web;
-
   let options = { debug:false, info:false };
 
   if(program.debug != null) options.debug = true;
@@ -100,8 +100,42 @@ const doGetStatus = Promise.coroutine(function *(program)
   }
 });
 
+const doGetHistory = Promise.coroutine(function *(program)
+{
+  let psyHost = "localhost";
+  let apiHost = program.api;
+  let website = program.web;
+  let options = { debug:false, info:false };
+  let elapsed = moment.duration(1,'day');
+
+  if(program.elapsed.length != 0)
+  {
+     let value = parseInt(program.elapsed[0]);
+     let unit = program.elapsed[1];
+
+     elapsed = moment.duration(value,unit);
+  }
+  if(program.debug != null) options.debug = true;
+  if(program.info != null) options.info = true;
+
+  const psyloc = require('psyloc')(psyHost,apiHost,website,options);
+
+  try
+  {
+    let fromDate = moment().subtract(elapsed).toDate();
+    let res = yield psyloc.getTransactionHistory(fromDate);
+
+    console.log(JSON.stringify(res,null,2));
+  }
+  catch(e)
+  {
+    console.error(e);
+  }
+});
+
 module.exports =
 { 
+  doGetHistory:doGetHistory,
   doGetStatus:doGetStatus,
   doSend:doSend
 };
