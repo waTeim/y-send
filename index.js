@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 const path = require('path');
 const moment = require('moment');
-const decode = require('decode-html');
+const decode = require('unescape');
 
 function resMessage(res,options)
 {
@@ -129,7 +129,7 @@ const doGetHistory = Promise.coroutine(function *(program)
     if(res != null && res.data != null)
     {
       for(let i = 0;i < res.data.length;i++)
-        res.data[i].exportPath = decode(res.data[i].exportPath);
+        res.data[i].exportPath = decode(res.data[i].exportPath,'all');
     }   
     if(program.columns)
     {
