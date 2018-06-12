@@ -80,19 +80,31 @@ const doGetStatus = Promise.coroutine(function *(program)
   let apiHost = program.api;
   let website = program.web;
   let options = { debug:false, info:false };
+  let transactions = program.transaction;
 
   if(program.debug != null) options.debug = true;
   if(program.info != null) options.info = true;
 
   const psyloc = require('psyloc')(psyHost,apiHost,website,options);
 
-  if(program.args.length == 1)
+  if(transactions.length != 0)
   {
     try
     {
-      let res = yield psyloc.getTransactionStatus(program.args[0]);
+      if(transactions.length == 1)
+      {
+        let res = yield psyloc.getTransactionStatus(transactions[0]);
 
-      console.log(JSON.stringify(res,null,2));
+        console.log(JSON.stringify(res,null,2));
+      }
+      else
+      {
+        let res = [];
+
+        for(let i = 0;i < transactions.length;i++)
+          res[i] = yield psyloc.getTransactionStatus(transactions[i]);
+        console.log(JSON.stringify(res,null,2));
+      }
     }
     catch(e)
     {
