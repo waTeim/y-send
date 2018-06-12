@@ -3,6 +3,7 @@
 const Promise = require('bluebird');
 const path = require('path');
 const moment = require('moment');
+const decode = require('decode-html');
 
 function resMessage(res,options)
 {
@@ -125,7 +126,25 @@ const doGetHistory = Promise.coroutine(function *(program)
     let fromDate = moment().subtract(elapsed).toDate();
     let res = yield psyloc.getTransactionHistory(fromDate);
 
-    console.log(JSON.stringify(res,null,2));
+    if(res != null && res.data != null)
+    {
+      for(let i = 0;i < res.data.length;i++)
+        res.data[i].exportPath = decode(res.data[i].exportPath);
+    }   
+    if(program.columns)
+    {
+      console.log(`Status\t\tCompl%\tLast Updated\t\tPath`);
+      if(res != null && res.data != null)
+      {
+        for(let i = 0;i < res.data.length;i++)
+        {
+          let rec = res.data[i];
+
+          console.log(`${rec.taskStatus}\t${rec.pctComplete}\t${rec.lastModDate}\t${rec.exportPath}`);
+        }
+      }   
+    }
+    else console.log(JSON.stringify(res,null,2));
   }
   catch(e)
   {

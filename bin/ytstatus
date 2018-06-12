@@ -30,6 +30,7 @@
     .usage('[options] <command>')
     .description("command is one of export or global")
     .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
+    .option('-c, --columns','column output')
     .option('-d, --debug','generate additional logging info')
     .option('-e, --elapsed [duration]','length of history',list,[])
     .option('-t, --transaction [transactionId]','transaction id',collect,[])
