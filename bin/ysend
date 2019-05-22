@@ -33,6 +33,7 @@
     .option('-a, --api <api-host>','the api host',"api.esecuresend.com")
     .option('-w, --web <website>','website',"www.esecuresend.com")
     .option('-e, --encrypted','send encrypted')
+    .option('-u, --unencrypted','send unencrypted')
     .option('-d, --debug','generate additional logging info')
     .option('-i, --info','show transaction info')
     .parse(process.argv);

@@ -30,8 +30,10 @@ const doSend = Promise.coroutine(function *(program)
   let apiHost = program.api;
   let website = program.web;
   let encrypted = false;
+  let ignoreKeys = false;
 
   if(program.encrypted != null) encrypted = true;
+  if(program.unencrypted != null) ignoreKeys = true;
 
   let options = { debug:false, info:false, encrypted:encrypted };
 
@@ -48,20 +50,20 @@ const doSend = Promise.coroutine(function *(program)
 
       if(program.channel != null)
       {
-        let res = yield psyloc.sendViaChannel(program.args[0],program.channel,program.args[1],encrypted,src);
+        let res = yield psyloc.sendViaChannel(program.args[0],program.channel,program.args[1],encrypted,ignoreKeys,src);
 
         resMessage(res,options);
       }
       else if(program.all)
       {
-        let res = yield psyloc.sendToAllReceivers(program.args[0],program.args[1],encrypted,src);
+        let res = yield psyloc.sendToAllReceivers(program.args[0],program.args[1],encrypted,ignoreKeys,src);
 
         resMessage(res,options);
 
       }
       else if(program.recipient.length != 0)
       {
-        let res = yield psyloc.sendToRlist(program.args[0],program.recipient,program.args[1],encrypted,src);
+        let res = yield psyloc.sendToRlist(program.args[0],program.recipient,program.args[1],encrypted,ignoreKeys,src);
 
         resMessage(res,options);
       }

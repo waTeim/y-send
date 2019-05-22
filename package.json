@@ -1,6 +1,6 @@
 {
   "name": "ysend",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "A client to send a file via psylo",
   "main": "index.js",
   "repository": {
